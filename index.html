@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas & Isabella • Celebração de Casamento</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wedding: {
+                            base: '#FAF7F2',       /* Marfim Seda Perolado */
+                            surface: '#F3EDE4',    /* Areia Nobre */
+                            eucalyptus: '#425446', /* Verde Botânico Nobre */
+                            eucalyptusDark: '#28352C',
+                            gold: '#C5A880',       /* Dourado Champanhe */
+                            goldDark: '#9E7E55',
+                            dark: '#1C1917',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Didot', 'Georgia', 'serif'],
+                        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FAF7F2; }
+        ::-webkit-scrollbar-thumb { background: #D9CEBF; border-radius: 3px; }
+        
+        /* Folhagem Botânica Aquarelada Nítida e Fixa (Visível e sem cortes geométricos) */
+        .bg-folhas-luxo {
+            background-image: url('https://images.unsplash.com/photo-1546842931-886c185b4c8c?auto=format&fit=crop&w=1920&q=80');
+            background-attachment: fixed;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Estilos da Cerimônia de Abertura do Envelope 3D e Lacre de Cera */
+        .envelope-perspective {
+            perspective: 1200px;
+        }
+        .envelope-flap {
+            transform-origin: top center;
+            transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+            z-index: 5;
+        }
+        .lacre-wax {
+            background: radial-gradient(circle at 32% 28%, #5A7761 0%, #364B3B 55%, #223026 100%);
+            box-shadow: 
+                0 10px 25px -4px rgba(0, 0, 0, 0.5),
+                0 4px 10px -2px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .lacre-wax:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 14px 30px -4px rgba(0, 0, 0, 0.6),
+                inset 0 2px 5px rgba(255, 255, 255, 0.5),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.7);
+        }
+        .lacre-wax.broken {
+            transform: scale(1.3) rotate(18deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .envelope-card {
+            transition: transform 0.85s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+        .envelope-card.peek {
+            transform: translateY(-48px);
+        }
+    </style>
+</head>
+<body class="bg-wedding-base text-stone-800 font-sans antialiased selection:bg-wedding-gold selection:text-white relative pb-28 overflow-hidden h-screen touch-none overscroll-none">
+
+    <!-- CAMADA DE FOLHAGENS FIXAS (OPACIDADE AJUSTADA PARA 20% - VISÍVEL E SUAVE) -->
+    <div class="fixed inset-0 z-0 pointer-events-none bg-folhas-luxo opacity-[0.20] filter contrast-110"></div>
+    <div class="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-wedding-base/85 via-wedding-base/60 to-wedding-base/90"></div>
+
+    <!-- 0. CERIMÔNIA DE ABERTURA: ENVELOPE REALISTA COM LACRE DE CERA ARTESANAL (PADRÃO LUXO) -->
+    <div id="envelope-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 bg-stone-950/90 backdrop-blur-xl transition-all duration-700 select-none touch-none overscroll-none">
+        
+        <!-- BOTÃO DISCRETO PARA PULAR DIRETO -->
+        <button onclick="pularEnvelope()" class="absolute top-5 right-5 text-[11px] uppercase tracking-widest text-stone-300 hover:text-white transition py-2 px-4 rounded-full bg-white/10 border border-white/20 hover:border-wedding-gold/60 backdrop-blur-md cursor-pointer flex items-center gap-1.5 active:scale-95 z-50">
+            <span>Entrar direto</span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-wedding-gold"></i>
+        </button>
+
+        <div class="relative flex flex-col items-center max-w-[330px] sm:max-w-[370px] w-full mx-auto my-auto">
+            
+            <!-- CARD MOCKUP DO ENVELOPE FOTOGRÁFICO COM FOLHAGENS REAIS -->
+            <div id="envelope-stage" class="relative w-full aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.25)_inset] cursor-pointer group transition-all duration-700" onclick="abrirEnvelope()">
+                
+                <!-- FOTOGRAFIA FLATLAY DE PAPELARIA FINA COM TEXTURA E FOLHAGENS -->
+                <img id="envelope-img" src="envelope-luxo.jpg" alt="Convite de Casamento" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]">
+
+                <!-- LACRE DE CERA ARTESANAL 3D POSICIONADO EXATAMENTE NA PONTA DA ABA -->
+                <div id="envelope-seal" class="absolute top-[49.5%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex items-center justify-center transition-all duration-500">
+                    <!-- Efeito de pulso luminoso dourado convidando ao toque -->
+                    <span id="seal-ping" class="animate-ping absolute w-16 h-16 rounded-full bg-wedding-gold/50 pointer-events-none"></span>
+
+                    <!-- CORPO DA CERA ORGÂNICA DERRETIDA (3D) -->
+                    <div id="lacre-wax-btn" class="lacre-wax relative w-16 h-16 sm:w-18 sm:h-18 rounded-[48%_52%_51%_49%_/_53%_47%_53%_47%] p-1.5 flex items-center justify-center cursor-pointer shadow-[0_12px_28px_rgba(0,0,0,0.55),inset_0_2px_4px_rgba(255,255,255,0.4),inset_0_-3px_5px_rgba(0,0,0,0.7)]">
+                        <!-- Anel rebaixado de sinete clássico com monograma -->
+                        <div class="w-full h-full rounded-full border border-wedding-gold/60 flex flex-col items-center justify-center bg-radial from-transparent to-black/35 shadow-inner">
+                            <span class="font-serif text-wedding-gold text-xs sm:text-sm font-bold tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] select-none">
+                                L & I
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LEGENDA GUIA ABAIXO DO ENVELOPE -->
+            <div id="envelope-prompt" class="mt-6 text-center transition-opacity duration-300">
+                <p class="font-serif italic text-stone-300 text-sm tracking-wide mb-2">
+                    Você foi convidado para celebrar o nosso amor
+                </p>
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-semibold text-wedding-gold backdrop-blur-md">
+                    <i class="fa-solid fa-hand-pointer text-xs text-wedding-gold animate-bounce"></i>
+                    <span>Toque no lacre para abrir</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BOTÃO FLUTUANTE DE MÚSICA COM ÍCONE DE PLAY / STOP QUADRADO -->
+    <div class="fixed top-3 right-3 sm:top-5 sm:right-5 z-50">
+        <button onclick="toggleMusica()" id="btnMusica" class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-md border border-wedding-gold/60 shadow-xl text-wedding-goldDark flex items-center justify-center text-sm transition duration-300 hover:scale-105 active:scale-95" title="Música do Casal" aria-label="Tocar música">
+            <!-- Ícone que alterna entre Nota Musical e Stop (Quadrado) -->
+            <span id="iconeMusica">
+                <i class="fa-solid fa-music"></i>
+            </span>
+            <!-- Indicador sutil de áudio tocando -->
+            <span id="indicadorOnda" class="hidden absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-wedding-gold opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-wedding-goldDark"></span>
+            </span>
+        </button>
+        <!-- Trilha sonora instrumental contemporânea (Violão Acústico Fingerstyle) -->
+        <audio id="audioCasal" loop preload="auto">
+            <source src="musica.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL (Z-INDEX 10) -->
+    <div class="relative z-10">
+
+        <!-- HERO SECTION COM DEGRADÊ REFORÇADO NA FOTO DOS NOIVOS -->
+        <header class="pt-16 pb-20 px-4 text-center">
+            
+            <!-- Foto dos Noivos com Arco e Fusão Acentuada na Base -->
+            <div class="relative max-w-[290px] sm:max-w-xs mx-auto mb-8">
+                <div class="relative rounded-t-[12rem] overflow-hidden aspect-[3/4] shadow-2xl border-[3px] border-white bg-stone-100">
+                    <!-- Foto Nítida com Cores Reais -->
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" 
+                         alt="Lucas e Isabella" 
+                         class="w-full h-full object-cover object-center">
+                    
+                    <!-- Degradê Reforçado: Transição Suave nos Últimos 35% da Foto -->
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-wedding-base via-wedding-base/90 to-transparent pointer-events-none"></div>
+                </div>
+
+                <!-- Monograma Dourado Centralizado -->
+                <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-xl border border-wedding-gold/50 flex items-center justify-center font-serif text-wedding-goldDark font-bold text-sm tracking-widest">
+                    L&I
+                </div>
+            </div>
+
+            <!-- Nomes e Versículo Bíblico -->
+            <div class="max-w-2xl mx-auto pt-2">
+                <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-wedding-goldDark mb-3 inline-block">
+                    Celebração de Casamento
+                </span>
+
+                <h1 class="font-serif text-5xl sm:text-7xl text-wedding-eucalyptusDark font-normal leading-tight mb-4 tracking-tight">
+                    Lucas <span class="italic font-light text-wedding-gold">&</span> Isabella
+                </h1>
+
+                <p class="font-serif italic text-stone-600 text-sm sm:text-base max-w-md mx-auto mb-8 font-light leading-relaxed">
+                    "O amor é paciente, o amor é bondoso. Tudo sofre, tudo crê, tudo espera, tudo suporta."
+                    <span class="block text-[10px] uppercase tracking-[0.25em] text-stone-400 font-sans not-italic mt-2">1 Coríntios 13:4-7</span>
+                </p>
+
+                <!-- Data do Casamento -->
+                <div class="flex items-center justify-center gap-3 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-stone-700 mb-10 border-t border-b border-stone-300/60 py-3.5 max-w-xs sm:max-w-sm mx-auto">
+                    <span>Segunda-feira</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-wedding-gold"></span>
+                    <span>20.SET.2027</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-wedding-gold"></span>
+                    <span>17:00h</span>
+                </div>
+
+                <!-- Botões de Ação do Topo -->
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <a href="#rsvp" class="px-8 py-3.5 bg-wedding-eucalyptus hover:bg-wedding-eucalyptusDark text-white font-medium rounded-full text-xs uppercase tracking-widest transition shadow-lg shadow-wedding-eucalyptus/20 hover:scale-[1.02]">
+                        Confirmar Presença
+                    </a>
+                    <a href="#presentes" class="px-8 py-3.5 bg-white/90 backdrop-blur-md hover:bg-white text-stone-800 font-medium rounded-full text-xs uppercase tracking-widest transition border border-stone-200/90 shadow-sm hover:scale-[1.02]">
+                        Lista de Presentes (Pix)
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTAGEM REGRESSIVA (GLASSMORPHISM) -->
+        <section class="py-10 px-4 max-w-xl mx-auto -mt-10 relative z-20">
+            <div class="bg-white/85 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-wedding-gold/30 shadow-2xl text-center">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-4">
+                    Contagem Regressiva para o Nosso "Sim"
+                </span>
+                <div class="grid grid-cols-4 gap-2 text-stone-800">
+                    <div class="p-2">
+                        <span id="dias" class="font-serif text-3xl sm:text-4xl font-bold text-wedding-eucalyptus block">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-stone-400 font-medium">Dias</span>
+                    </div>
+                    <div class="p-2 border-l border-stone-200/60">
+                        <span id="horas" class="font-serif text-3xl sm:text-4xl font-bold text-wedding-eucalyptus block">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-stone-400 font-medium">Horas</span>
+                    </div>
+                    <div class="p-2 border-l border-stone-200/60">
+                        <span id="minutos" class="font-serif text-3xl sm:text-4xl font-bold text-wedding-eucalyptus block">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-stone-400 font-medium">Min</span>
+                    </div>
+                    <div class="p-2 border-l border-stone-200/60">
+                        <span id="segundos" class="font-serif text-3xl sm:text-4xl font-bold text-wedding-eucalyptus block">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-stone-400 font-medium">Seg</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOSSA HISTÓRIA / MURAL EDITORIAL -->
+        <section class="py-20 px-4 max-w-4xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-1">Momentos Especiais</span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-wedding-eucalyptusDark">Nossa História de Amor</h2>
+                <p class="text-xs text-stone-500 mt-2 max-w-md mx-auto font-light">Alguns capítulos da nossa caminhada até o altar</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-7 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/90 aspect-[4/5] relative group">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" 
+                         alt="Onde tudo começou" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 rounded-2xl text-xs border border-white">
+                        <span class="text-wedding-goldDark font-bold uppercase text-[10px] tracking-widest block">2021 • O Primeiro Encontro</span>
+                        <p class="text-stone-700 mt-0.5 font-light">Um café despretensioso em uma tarde de sábado que mudou nossos destinos para sempre.</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 flex flex-col gap-6">
+                    <div class="rounded-3xl overflow-hidden shadow-xl border-4 border-white/90 aspect-[16/10] relative group">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" 
+                         alt="Nossa Primeira Viagem" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-3 left-3 bg-stone-900/70 text-white text-[10px] px-3 py-1 rounded-full backdrop-blur-md font-medium">
+                            Primeira Viagem Juntos • 2023
+                        </div>
+                    </div>
+
+                    <div class="rounded-3xl overflow-hidden shadow-xl border-4 border-white/90 aspect-[16/10] relative group">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" 
+                         alt="O Pedido" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-3 left-3 bg-wedding-gold text-stone-950 font-bold text-[10px] px-3.5 py-1 rounded-full backdrop-blur-sm shadow-md">
+                            O Dia do "Sim!" • 2025
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOCALIZAÇÃO & LINKS WAZE / MAPS / CALENDAR -->
+        <section class="py-20 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-1">Onde & Quando</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-wedding-eucalyptusDark">Cerimônia e Recepção</h2>
+                    <p class="text-xs text-stone-500 mt-2 font-light">Tudo acontecerá em um único espaço integrado para o conforto de todos</p>
+                </div>
+
+                <div class="bg-white/85 backdrop-blur-md p-7 sm:p-10 rounded-3xl border border-wedding-gold/30 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-4 text-center md:text-left">
+                        <div>
+                            <h3 class="font-serif text-2xl font-bold text-wedding-eucalyptusDark">Espaço Villa Real Garden</h3>
+                            <p class="text-sm text-stone-600 mt-1"><i class="fa-solid fa-location-dot text-wedding-gold mr-2"></i>Alameda das Palmeiras, 1500 - Granja Viana, SP</p>
+                        </div>
+
+                        <div class="text-xs text-stone-500 space-y-1 font-light">
+                            <p><i class="fa-regular fa-clock text-wedding-gold mr-2"></i><strong>Horário:</strong> Pontualmente às 17h00 (Recepção logo em seguida no mesmo local)</p>
+                            <p><i class="fa-solid fa-square-parking text-wedding-gold mr-2"></i>Estacionamento cortesia e serviço de valet para convidados</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2.5 w-full md:w-auto shrink-0">
+                        <a href="https://waze.com/ul?q=Espaço+Villa+Real+Garden+Granja+Viana&navigate=yes" target="_blank" 
+                           class="px-6 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-2xl text-xs transition flex items-center justify-center gap-2 shadow-sm hover:scale-[1.02]">
+                            <i class="fa-brands fa-waze text-base"></i> Abrir Rota no Waze
+                        </a>
+
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Espaço+Villa+Real+Garden+Granja+Viana" target="_blank" 
+                           class="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-2xl text-xs transition flex items-center justify-center gap-2 shadow-sm hover:scale-[1.02]">
+                            <i class="fa-solid fa-diamond-turn-right text-wedding-gold text-sm"></i> Abrir no Google Maps
+                        </a>
+
+                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Casamento+Lucas+e+Isabella&dates=20270920T200000Z/20270921T030000Z&details=Casamento+Lucas+e+Isabella.+Contamos+com+sua+presença!&location=Espaço+Villa+Real+Garden,+Granja+Viana" target="_blank" 
+                           class="px-6 py-3.5 bg-white hover:bg-wedding-surface text-stone-800 font-bold rounded-2xl text-xs transition flex items-center justify-center gap-2 border border-stone-200/90 shadow-sm hover:scale-[1.02]">
+                            <i class="fa-regular fa-calendar-plus text-wedding-eucalyptus text-sm"></i> Salvar no Google Agenda
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DRESS CODE REFINADO -->
+                <div class="mt-8 bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 text-center shadow-md">
+                    <span class="text-[10px] uppercase tracking-[0.25em] text-wedding-goldDark font-bold block mb-1">Guia de Traje</span>
+                    <h4 class="font-serif font-bold text-lg text-wedding-eucalyptusDark mb-2">Traje: Esporte Fino / Passeio</h4>
+                    <p class="text-xs text-stone-500 max-w-md mx-auto mb-4 font-light">
+                        A cerimônia será ao ar livre durante o entardecer. Recomendamos sapatos com saltos confortáveis para gramado.
+                    </p>
+                    <div class="flex items-center justify-center gap-3 text-[11px] font-semibold text-stone-600">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-800 inline-block shadow-sm"></span> Paleta Madrinhas: Verde Oliva</span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-stone-900 inline-block shadow-sm"></span> Padrinhos: Terno Chumbo</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LISTA DE PRESENTES VIRTUAL (9 PRESENTES EM 3 ABAS + PIX SEM CONSTRANGIMENTO) -->
+        <section id="presentes" class="py-20 px-4 max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-1">Mimos & Lua de Mel</span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-wedding-eucalyptusDark">Lista de Presentes (Pix)</h2>
+                <p class="text-xs text-stone-500 mt-2 max-w-md mx-auto font-light">
+                    O nosso maior presente é a sua presença! Caso queira nos presentear com uma cota para nossa nova jornada, escolha uma das categorias abaixo:
+                </p>
+            </div>
+
+            <!-- ABAS DE NAVEGAÇÃO DOS PRESENTES -->
+            <div class="flex w-full items-center justify-start gap-2 mb-10 overflow-x-auto overflow-y-hidden px-1 pb-2 sm:justify-center">
+                <button onclick="mudarAbaPresentes('luademel')" id="tab-luademel" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm bg-stone-900 text-white shrink-0">
+                    🌴 Cotas Lua de Mel
+                </button>
+                <button onclick="mudarAbaPresentes('casanova')" id="tab-casanova" class="px-5 py-2.5 rounded-full text-xs font-medium transition bg-white/90 text-stone-600 border border-stone-200/90 hover:border-wedding-gold shrink-0">
+                    🏠 Para a Casa Nova
+                </button>
+                <button onclick="mudarAbaPresentes('brincadeiras')" id="tab-brincadeiras" class="px-5 py-2.5 rounded-full text-xs font-medium transition bg-white/90 text-stone-600 border border-stone-200/90 hover:border-wedding-gold shrink-0">
+                    🍾 Mimos Divertidos
+                </button>
+            </div>
+
+            <!-- ABA 1: LUA DE MEL (3 COTAS) -->
+            <div id="painel-luademel" class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">☕</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Café da Manhã na Praia</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Primeiro café a dois com vista para o mar.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 100,00</span>
+                        <button onclick="abrirModalPix('Café da Manhã na Praia', '100,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl border-2 border-wedding-gold shadow-xl text-center flex flex-col justify-between relative">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-wedding-gold text-stone-900 font-bold text-[9px] uppercase px-3.5 py-0.5 rounded-full tracking-wider shadow-sm">
+                        Favorito
+                    </span>
+                    <div>
+                        <span class="text-3xl mb-3 block">🍷</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Jantar Romântico com Vinho</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Noite especial de frutos do mar à luz de velas.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 180,00</span>
+                        <button onclick="abrirModalPix('Jantar Romântico com Vinho', '180,00')" class="w-full py-2.5 bg-wedding-gold hover:bg-wedding-goldDark text-stone-900 hover:text-white font-bold rounded-xl text-xs transition shadow-md">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">⛵</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Passeio de Barco no Pôr do Sol</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Memória inesquecível do casal pelas ilhas.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 250,00</span>
+                        <button onclick="abrirModalPix('Passeio de Barco no Pôr do Sol', '250,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 2: CASA NOVA (3 COTAS - INICIALMENTE OCULTA) -->
+            <div id="painel-casanova" class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 hidden">
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">🍳</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Jogo de Panelas dos Sonhos</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Para os dotes culinários do casal na nova rotina.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 120,00</span>
+                        <button onclick="abrirModalPix('Jogo de Panelas dos Sonhos', '120,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl border-2 border-wedding-gold shadow-xl text-center flex flex-col justify-between relative">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-wedding-gold text-stone-900 font-bold text-[9px] uppercase px-3.5 py-0.5 rounded-full tracking-wider shadow-sm">
+                        Essencial
+                    </span>
+                    <div>
+                        <span class="text-3xl mb-3 block">🍟</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Air Fryer da Paz Conjugal</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Praticidade garantida para os jantares rápidos.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 200,00</span>
+                        <button onclick="abrirModalPix('Air Fryer da Paz Conjugal', '200,00')" class="w-full py-2.5 bg-wedding-gold hover:bg-wedding-goldDark text-stone-900 hover:text-white font-bold rounded-xl text-xs transition shadow-md">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">🛋️</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Almofadas & Decoração do Sofá</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Aconchego para receber os amigos no fim de semana.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 150,00</span>
+                        <button onclick="abrirModalPix('Almofadas & Decoração do Sofá', '150,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: BRINCADEIRAS DOS NOIVOS (3 COTAS - INICIALMENTE OCULTA) -->
+            <div id="painel-brincadeiras" class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 hidden">
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">🍻</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Rodada de Chopp do Noivo</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Para aliviar o nervosismo antes de subir ao altar.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 60,00</span>
+                        <button onclick="abrirModalPix('Rodada de Chopp do Noivo', '60,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl border-2 border-wedding-gold shadow-xl text-center flex flex-col justify-between relative">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-wedding-gold text-stone-900 font-bold text-[9px] uppercase px-3.5 py-0.5 rounded-full tracking-wider shadow-sm">
+                        Diversão
+                    </span>
+                    <div>
+                        <span class="text-3xl mb-3 block">💆‍♀️</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Dia de Spa da Noiva</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Massagem relaxante pós-festa para descansar os pés.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 130,00</span>
+                        <button onclick="abrirModalPix('Dia de Spa da Noiva', '130,00')" class="w-full py-2.5 bg-wedding-gold hover:bg-wedding-goldDark text-stone-900 hover:text-white font-bold rounded-xl text-xs transition shadow-md">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/20 shadow-md text-center flex flex-col justify-between">
+                    <div>
+                        <span class="text-3xl mb-3 block">🧘‍♂️</span>
+                        <h4 class="font-serif font-bold text-base text-stone-900 mb-1">Estoque de Paciência para o Noivo</h4>
+                        <p class="text-xs text-stone-500 mb-4 font-light">Um incentivo de amor para os momentos de DR.</p>
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-lg text-wedding-eucalyptus block mb-3">R$ 80,00</span>
+                        <button onclick="abrirModalPix('Estoque de Paciência para o Noivo', '80,00')" class="w-full py-2.5 bg-wedding-surface hover:bg-wedding-eucalyptus hover:text-white text-stone-800 font-bold rounded-xl text-xs transition border border-stone-200">
+                            Presentear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAVE PIX GERAL DIRETA -->
+            <div class="bg-white/85 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/30 text-center max-w-lg mx-auto shadow-md mb-8">
+                <span class="text-xs text-stone-600 font-semibold block mb-2">Prefere enviar outro valor de coração?</span>
+                <div class="flex items-center justify-between bg-white p-2.5 rounded-2xl border border-stone-200 gap-2 shadow-inner">
+                    <input id="chavePixTexto" type="text" readonly value="casamentolucaseisabella@pix.com" class="bg-transparent text-xs text-stone-700 font-mono w-full px-2 outline-none">
+                    <button onclick="copiarChaveGeral()" class="px-5 py-2.5 bg-stone-900 hover:bg-wedding-eucalyptus text-white font-bold text-xs rounded-xl transition shrink-0 shadow-sm">
+                        <span id="btnTxtPix">Copiar Chave</span>
+                    </button>
+                </div>
+                <span id="avisoPixCopiado" class="text-[11px] text-emerald-600 font-bold mt-2 block hidden">✓ Chave Pix copiada com sucesso!</span>
+            </div>
+
+            <!-- LISTAS EM LOJAS FÍSICAS PARCEIRAS -->
+            <div class="bg-white/85 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-stone-200/80 text-center max-w-2xl mx-auto shadow-sm">
+                <span class="text-[10px] uppercase tracking-[0.25em] text-wedding-goldDark font-bold block mb-1">Presentes para a Casa Nova</span>
+                <h4 class="font-serif font-bold text-lg text-wedding-eucalyptusDark mb-2">Prefere nos presentear com itens físicos?</h4>
+                <p class="text-xs text-stone-500 mb-6 font-light max-w-md mx-auto">
+                    Separamos listas oficiais com utensílios e decoração para os convidados que preferem escolher itens de loja física:
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <a href="https://www.camicado.com.br" target="_blank" rel="noopener noreferrer" 
+                       class="px-5 py-2.5 bg-white hover:bg-wedding-surface text-stone-700 font-semibold rounded-xl text-xs transition border border-stone-200 shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-gift text-wedding-gold"></i> Lista Camicado ↗
+                    </a>
+                    <a href="https://www.fastshop.com.br" target="_blank" rel="noopener noreferrer" 
+                       class="px-5 py-2.5 bg-white hover:bg-wedding-surface text-stone-700 font-semibold rounded-xl text-xs transition border border-stone-200 shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-gift text-wedding-gold"></i> Lista Fast Shop ↗
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONFIRMAÇÃO DE PRESENÇA -->
+        <section id="rsvp" class="py-20 px-4">
+            <div class="max-w-md mx-auto bg-white/90 backdrop-blur-md p-8 sm:p-10 rounded-3xl border border-wedding-gold/30 shadow-2xl text-center transition-all duration-500">
+                
+                <!-- ÁREA DO FORMULÁRIO -->
+                <div id="rsvpFormContainer">
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-1">Lista Oficial de Convidados</span>
+                    <h2 class="font-serif text-3xl text-wedding-eucalyptusDark mb-2">Confirmação de Presença</h2>
+                    <p class="text-xs text-stone-500 mb-6 font-light">Por favor, confirme até o dia 30 de Agosto de 2027 para organizarmos tudo com carinho.</p>
+
+                    <form id="formRsvp" onsubmit="enviarRsvpPlanilha(event)" class="space-y-4 text-left text-xs">
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">Seu Nome Completo:</label>
+                            <input type="text" id="rsvpNome" required placeholder="Ex: Rodrigo Mendes" class="w-full p-3.5 rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus transition shadow-sm">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">Você irá comparecer?</label>
+                            <select id="rsvpStatus" class="w-full p-3.5 rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus font-medium transition shadow-sm">
+                                <option value="Sim, com certeza estarei lá!">✓ Sim, com certeza irei!</option>
+                                <option value="Infelizmente não poderei comparecer">✕ Infelizmente não poderei</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">Quantos acompanhantes vão com você?</label>
+                            <select id="rsvpAcompanhantes" class="w-full p-3.5 rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus transition shadow-sm">
+                                <option value="Apenas o titular (0)">Apenas o titular (0)</option>
+                                <option value="1 acompanhante">1 acompanhante</option>
+                                <option value="2 acompanhantes">2 acompanhantes</option>
+                                <option value="Família (3 ou mais)">Família (3 ou mais)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">Alguma restrição alimentar? (Opcional):</label>
+                            <input type="text" id="rsvpRestricao" placeholder="Ex: Vegetariano, intolerância a glúten..." class="w-full p-3.5 rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus transition shadow-sm">
+                        </div>
+
+                        <button type="submit" id="btnSubmitRsvp" class="w-full py-4 bg-wedding-eucalyptus hover:bg-wedding-eucalyptusDark text-white font-bold rounded-xl text-xs uppercase tracking-widest transition shadow-lg shadow-wedding-eucalyptus/20 flex items-center justify-center gap-2 mt-2">
+                            <span>Confirmar Presença na Lista</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TELA DE SUCESSO ELEGANTE -->
+                <div id="rsvpSucessoContainer" class="hidden py-8 space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-[0.25em] text-emerald-600 font-bold block">Tudo Certo!</span>
+                    <h3 class="font-serif text-3xl font-bold text-wedding-eucalyptusDark">Presença Confirmada</h3>
+                    <p id="msgConfirmadoNome" class="text-xs text-stone-600 leading-relaxed font-light max-w-xs mx-auto">
+                        Obrigado por confirmar! Seus dados já estão registrados na lista oficial dos noivos.
+                    </p>
+                    <div class="pt-6 border-t border-stone-100 flex flex-col gap-2">
+                        <a href="#presentes" class="py-3 px-5 bg-wedding-gold hover:bg-wedding-goldDark text-stone-900 font-bold rounded-xl text-xs transition shadow-md">
+                            Ver Lista de Presentes (Pix)
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LIVRO DE VISITAS / MURAL DE RECADOS COM ROLAGEM -->
+        <section class="py-20 px-4 max-w-xl mx-auto text-center">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-wedding-goldDark font-bold block mb-1">Carinho & Afeto</span>
+            <h2 class="font-serif text-3xl text-wedding-eucalyptusDark mb-2">Livro de Visitas Digital</h2>
+            <p class="text-xs text-stone-500 mb-8 font-light">Deixe seus votos registrados para os noivos e convidados lerem com carinho!</p>
+
+            <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl border border-wedding-gold/30 shadow-xl text-left mb-6">
+                <div class="mb-3">
+                    <label class="block text-xs font-semibold text-stone-700 mb-1">Seu Nome:</label>
+                    <input type="text" id="recadoAutor" placeholder="Ex: Padrinho Bruno" class="w-full p-3 text-xs rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus transition">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-semibold text-stone-700 mb-1">Sua Mensagem de Carinho:</label>
+                    <textarea id="recadoMensagem" rows="3" placeholder="Escreva aqui uma mensagem especial para Lucas e Isabella..." class="w-full p-3 text-xs rounded-xl border border-stone-200/90 bg-white outline-none focus:border-wedding-eucalyptus transition"></textarea>
+                </div>
+                <button onclick="publicarRecadoComRolagem()" id="btnPostarRecado" class="w-full py-3.5 bg-wedding-gold hover:bg-wedding-goldDark text-stone-900 font-bold rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-solid fa-heart text-xs text-stone-900"></i> Registrar Mensagem no Mural
+                </button>
+            </div>
+
+            <!-- CAIXA DE ROLAGEM DOS RECADOS -->
+            <div class="text-left">
+                <span class="text-[11px] font-semibold text-stone-600 mb-2 block uppercase tracking-wider">
+                    Recados Recentes (Role para ler todos):
+                </span>
+                
+                <div id="caixaRolagemRecados" class="max-h-80 overflow-y-auto space-y-3 pr-2">
+                    <div class="bg-white/95 backdrop-blur-sm p-4 rounded-2xl border border-stone-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-serif font-bold text-xs text-wedding-eucalyptusDark">Madrinha Camila & Felipe</span>
+                            <span class="text-[9px] text-stone-400">Ontem às 18:30</span>
+                        </div>
+                        <p class="text-xs text-stone-600 italic leading-relaxed font-light">
+                            "Que o caminho de vocês seja repleto de amor, lealdade e conquistas. Estamos muito ansiosos para celebrar esse grande dia!"
+                        </p>
+                        <span class="text-[10px] text-wedding-gold mt-1.5 block"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+
+                    <div class="bg-white/95 backdrop-blur-sm p-4 rounded-2xl border border-stone-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-serif font-bold text-xs text-wedding-eucalyptusDark">Tio Roberto e Família</span>
+                            <span class="text-[9px] text-stone-400">Há 2 dias</span>
+                        </div>
+                        <p class="text-xs text-stone-600 italic leading-relaxed font-light">
+                            "Lucas e Isa, parabéns por essa união maravilhosa! Que Deus continue abençoando vocês sempre."
+                        </p>
+                        <span class="text-[10px] text-wedding-gold mt-1.5 block"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RODAPÉ OFICIAL OPPIKOFER -->
+        <footer class="py-10 bg-white/70 backdrop-blur-md border-t border-stone-200/80 text-center text-xs text-stone-400">
+            <p class="font-serif text-wedding-eucalyptusDark font-bold tracking-[0.25em] uppercase">LUCAS & ISABELLA</p>
+            <p class="text-[11px] mt-1 text-stone-500">20 de Setembro de 2027 • Granja Viana, SP</p>
+            <div class="mt-4 pt-3 border-t border-stone-200/60 max-w-xs mx-auto text-[10px] text-stone-400">
+                Convite Interativo por 
+                <a href="https://instagram.com/oppikofer_studioweb" target="_blank" class="font-bold text-stone-700 hover:text-wedding-goldDark transition">
+                    Oppikofer • Studio Web
+                </a>
+            </div>
+            <p class="mt-3 text-[9px] text-stone-400">
+                Trilha sonora: "Morning" por Kevin MacLeod · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY 4.0</a> (Violão Acústico Fingerstyle)
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- MODAL POP-UP ELEGANTE DE PIX (COM FECHAMENTO NO X, CLIQUE FORA OU ESC) -->
+    <div id="modalPix" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="fecharModalSeClicarFora(event)">
+        <div class="bg-white rounded-3xl border border-wedding-gold/40 shadow-2xl p-6 sm:p-8 max-w-sm w-full text-center relative transform scale-95 transition-transform duration-300" id="modalPixCard">
+            <!-- Botão X de Fechamento -->
+            <button onclick="fecharModalPix()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center text-xs transition" title="Fechar">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <span class="text-3xl mb-2 block">🎁</span>
+            <span class="text-[10px] uppercase tracking-widest text-wedding-goldDark font-bold block mb-1">Cota Selecionada</span>
+            <h3 id="modalNomePresente" class="font-serif text-xl font-bold text-wedding-eucalyptusDark mb-1">Jantar Romântico</h3>
+            <span id="modalValorPresente" class="font-serif text-2xl font-bold text-wedding-goldDark block mb-4">R$ 180,00</span>
+
+            <p class="text-[11px] text-stone-500 mb-4 font-light">
+                Copie a chave Pix abaixo e cole no aplicativo do seu banco para transferir:
+            </p>
+
+            <!-- Campo Pix com Botão de Cópia -->
+            <div class="bg-wedding-surface p-3 rounded-2xl border border-stone-200 mb-4">
+                <input id="modalChaveInput" type="text" readonly value="casamentolucaseisabella@pix.com" class="bg-transparent text-xs text-stone-700 font-mono w-full text-center mb-2 outline-none font-semibold">
+                <button onclick="copiarPixModal()" id="btnCopiarModal" class="w-full py-2.5 bg-stone-900 hover:bg-wedding-eucalyptus text-white font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-copy"></i> <span>Copiar Chave Pix</span>
+                </button>
+            </div>
+
+            <!-- Botão Opcional de Aviso no WhatsApp (Discreto, sem pressão) -->
+            <div class="pt-3 border-t border-stone-100">
+                <button onclick="avisarNoivosWhatsApp()" class="text-[11px] text-stone-500 hover:text-emerald-700 transition flex items-center justify-center gap-1.5 mx-auto">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+                    <span>Avisar os noivos no WhatsApp <i>(Opcional)</i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CONSOLIDADO -->
+    <script>
+        // SUA URL OFICIAL DO APPS SCRIPT PRESERVADA:
+        const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycby9TEo6USMD7aHBtTZsEdnoex1GoKS5UH6rGKe7mRZL9kfB_kA_7oQDDSGRj2m4c9RU/exec"; 
+
+        // 0. CERIMÔNIA DE ABERTURA DO ENVELOPE COM LACRE DE CERA ARTESANAL
+        let envelopeAberto = false;
+
+        function travarScroll() {
+            document.documentElement.style.overflow = "hidden";
+            document.documentElement.style.height = "100%";
+            document.body.style.overflow = "hidden";
+            document.body.style.height = "100vh";
+            document.body.style.touchAction = "none";
+        }
+
+        function destravarScroll() {
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.height = "";
+            document.body.style.overflow = "";
+            document.body.style.height = "";
+            document.body.style.touchAction = "";
+            document.body.classList.remove("overflow-hidden", "h-screen", "touch-none", "overscroll-none");
+        }
+
+        // Ativar trava no carregamento inicial
+        travarScroll();
+
+        const envelopeOverlayEl = document.getElementById("envelope-overlay");
+        if (envelopeOverlayEl) {
+            envelopeOverlayEl.addEventListener("touchmove", function(e) {
+                if (!envelopeAberto) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        }
+
+        function abrirEnvelope() {
+            if (envelopeAberto) return;
+            envelopeAberto = true;
+
+            const overlay = document.getElementById("envelope-overlay");
+            const stage = document.getElementById("envelope-stage");
+            const seal = document.getElementById("lacre-wax-btn");
+            const ping = document.getElementById("seal-ping");
+            const prompt = document.getElementById("envelope-prompt");
+
+            // 1. Tocar música do casal autorizada pelo gesto do usuário
+            const audio = document.getElementById("audioCasal");
+            if (audio) {
+                audio.play().then(() => {
+                    musicaTocando = true;
+                    ativarVisualMusica();
+                }).catch(err => {
+                    console.log("Áudio aguardando interação adicional:", err);
+                });
+            }
+
+            // 2. Animação de quebra do lacre e elevação do convite
+            if (ping) ping.style.display = "none";
+            if (seal) seal.classList.add("broken");
+            if (stage) stage.style.transform = "scale(1.04)";
+            if (prompt) prompt.style.opacity = "0";
+
+            // Destravar a rolagem da página para navegar livremente
+            destravarScroll();
+
+            // 3. Dissolução cinematográfica do overlay revelando a página
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.style.opacity = "0";
+                    overlay.style.pointerEvents = "none";
+                    setTimeout(() => {
+                        overlay.classList.add("hidden");
+                    }, 700);
+                }
+            }, 650);
+        }
+
+        function pularEnvelope() {
+            envelopeAberto = true;
+            destravarScroll();
+            const overlay = document.getElementById("envelope-overlay");
+            if (overlay) {
+                overlay.style.opacity = "0";
+                overlay.style.pointerEvents = "none";
+                setTimeout(() => {
+                    overlay.classList.add("hidden");
+                }, 400);
+            }
+        }
+
+        // 1. MÚSICA DO CASAL: PACHELBEL'S CANON IN D (PIANO ACÚSTICO ROMÂNTICO)
+        let musicaTocando = false;
+        const audio = document.getElementById("audioCasal");
+
+        function ativarVisualMusica() {
+            const btn = document.getElementById("btnMusica");
+            const icone = document.getElementById("iconeMusica");
+            const onda = document.getElementById("indicadorOnda");
+            if (icone) icone.innerHTML = `<i class="fa-solid fa-stop text-sm text-white"></i>`;
+            if (btn) {
+                btn.classList.remove("bg-white/95", "text-wedding-goldDark");
+                btn.classList.add("bg-wedding-eucalyptus", "text-white");
+            }
+            if (onda) onda.classList.remove("hidden");
+        }
+
+        function desativarVisualMusica() {
+            const btn = document.getElementById("btnMusica");
+            const icone = document.getElementById("iconeMusica");
+            const onda = document.getElementById("indicadorOnda");
+            if (icone) icone.innerHTML = `<i class="fa-solid fa-music text-sm text-wedding-goldDark"></i>`;
+            if (btn) {
+                btn.classList.remove("bg-wedding-eucalyptus", "text-white");
+                btn.classList.add("bg-white/95", "text-wedding-goldDark");
+            }
+            if (onda) onda.classList.add("hidden");
+        }
+
+        function toggleMusica() {
+            if (!musicaTocando) {
+                audio.play().then(() => {
+                    musicaTocando = true;
+                    ativarVisualMusica();
+                }).catch(err => {
+                    console.error("Não foi possível reproduzir a trilha sonora:", err);
+                    alert("Não foi possível carregar a música. Verifique sua conexão e tente novamente.");
+                });
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                musicaTocando = false;
+                desativarVisualMusica();
+            }
+        }
+
+        // 2. CONTAGEM REGRESSIVA
+        const dataCasamento = new Date("2027-09-20T17:00:00").getTime();
+        setInterval(() => {
+            const agora = new Date().getTime();
+            const distancia = dataCasamento - agora;
+            if (distancia > 0) {
+                document.getElementById("dias").innerText = String(Math.floor(distancia / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById("horas").innerText = String(Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById("minutos").innerText = String(Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById("segundos").innerText = String(Math.floor((distancia % (1000 * 60)) / 1000)).padStart(2, '0');
+            }
+        }, 1000);
+
+        // 3. ABAS DINÂMICAS DE PRESENTES (9 PRESENTES EM 3 CATEGORIAS)
+        function mudarAbaPresentes(categoria) {
+            const abas = ['luademel', 'casanova', 'brincadeiras'];
+            abas.forEach(aba => {
+                document.getElementById(`painel-${aba}`).classList.add('hidden');
+                document.getElementById(`tab-${aba}`).className = 'px-5 py-2.5 rounded-full text-xs font-medium transition bg-white/90 text-stone-600 border border-stone-200/90 hover:border-wedding-gold shrink-0';
+            });
+
+            document.getElementById(`painel-${categoria}`).classList.remove('hidden');
+            document.getElementById(`tab-${categoria}`).className = 'px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm bg-stone-900 text-white shrink-0';
+        }
+
+        // 4. CHAVE PIX GERAL
+        function copiarChaveGeral() {
+            const chave = document.getElementById("chavePixTexto").value;
+            navigator.clipboard.writeText(chave).then(() => {
+                const aviso = document.getElementById("avisoPixCopiado");
+                aviso.classList.remove("hidden");
+                setTimeout(() => aviso.classList.add("hidden"), 3000);
+            });
+        }
+
+        // 5. MODAL DE PIX COM 3 OPÇÕES DE SAÍDA
+        let cotaAtualNome = '';
+        let cotaAtualValor = '';
+
+        function abrirModalPix(nome, valor) {
+            cotaAtualNome = nome;
+            cotaAtualValor = valor;
+
+            document.getElementById("modalNomePresente").innerText = nome;
+            document.getElementById("modalValorPresente").innerText = `R$ ${valor}`;
+
+            const modal = document.getElementById("modalPix");
+            const card = document.getElementById("modalPixCard");
+
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.remove("opacity-0");
+                card.classList.remove("scale-95");
+            }, 10);
+
+            const btn = document.getElementById("btnCopiarModal");
+            btn.className = "w-full py-2.5 bg-stone-900 hover:bg-wedding-eucalyptus text-white font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2";
+            btn.innerHTML = `<i class="fa-regular fa-copy"></i> <span>Copiar Chave Pix</span>`;
+        }
+
+        function fecharModalPix() {
+            const modal = document.getElementById("modalPix");
+            const card = document.getElementById("modalPixCard");
+
+            modal.classList.add("opacity-0");
+            card.classList.add("scale-95");
+
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        function fecharModalSeClicarFora(e) {
+            if (e.target.id === "modalPix") {
+                fecharModalPix();
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                fecharModalPix();
+            }
+        });
+
+        function copiarPixModal() {
+            const chave = document.getElementById("modalChaveInput").value;
+            navigator.clipboard.writeText(chave).then(() => {
+                const btn = document.getElementById("btnCopiarModal");
+                btn.className = "w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2";
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Chave Copiada!</span>`;
+            });
+        }
+
+        function avisarNoivosWhatsApp() {
+            const msg = `🎁 *Mimo para o Casamento de Lucas & Isabella!*%0A%0AOlá! Acabei de escolher o presente: *${cotaAtualNome}* (R$ ${cotaAtualValor}).%0AQue vocês aproveitem muito cada momento! ❤️`;
+            window.open(`https://wa.me/5511958464615?text=${msg}`, '_blank');
+        }
+
+        // 6. CONFIRMAÇÃO DE PRESENÇA (GRAVA NO GOOGLE SHEETS)
+        function enviarRsvpPlanilha(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btnSubmitRsvp");
+            const nome = document.getElementById("rsvpNome").value;
+            const status = document.getElementById("rsvpStatus").value;
+            const acompanhantes = document.getElementById("rsvpAcompanhantes").value;
+            const restricao = document.getElementById("rsvpRestricao").value || "Nenhuma";
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Gravando na lista...`;
+
+            const dados = {
+                tipo: "rsvp",
+                nome: nome,
+                status: status,
+                acompanhantes: acompanhantes,
+                restricao: restricao
+            };
+
+            fetch(URL_GOOGLE_SCRIPT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados)
+            }).catch(err => console.log(err));
+
+            setTimeout(() => {
+                document.getElementById("rsvpFormContainer").classList.add("hidden");
+                const sucessoContainer = document.getElementById("rsvpSucessoContainer");
+                sucessoContainer.classList.remove("hidden");
+                document.getElementById("msgConfirmadoNome").innerHTML = `Obrigado, <strong>${nome}</strong>! Seus dados foram registrados com sucesso na lista oficial dos noivos.`;
+            }, 800);
+        }
+
+        // 7. MURAL DE RECADOS COM CAIXA DE ROLAGEM
+        function publicarRecadoComRolagem() {
+            const autorInput = document.getElementById("recadoAutor");
+            const msgInput = document.getElementById("recadoMensagem");
+
+            const autor = autorInput.value.trim();
+            const msg = msgInput.value.trim();
+
+            if (!autor || !msg) {
+                alert("Por favor, preencha seu nome e a mensagem!");
+                return;
+            }
+
+            fetch(URL_GOOGLE_SCRIPT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ tipo: "recado", autor: autor, mensagem: msg })
+            }).catch(err => console.log(err));
+
+            const caixa = document.getElementById("caixaRolagemRecados");
+            const novoCard = document.createElement("div");
+            novoCard.className = "bg-white/95 backdrop-blur-sm p-4 rounded-2xl border-2 border-wedding-gold shadow-md relative";
+            novoCard.innerHTML = `
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="font-serif font-bold text-xs text-wedding-eucalyptusDark">${autor}</span>
+                    <span class="text-[9px] text-emerald-600 font-bold">Acabou de postar • Agora</span>
+                </div>
+                <p class="text-xs text-stone-600 italic leading-relaxed font-light">"${msg}"</p>
+                <span class="text-[10px] text-wedding-gold mt-1.5 block"><i class="fa-solid fa-heart"></i> Mensagem registrada</span>
+            `;
+
+            caixa.prepend(novoCard);
+            caixa.scrollTop = 0;
+
+            autorInput.value = "";
+            msgInput.value = "";
+        }
+    </script>
+</body>
+</html>
